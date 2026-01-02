@@ -39,6 +39,10 @@ class OfferDetailUrlSerializer(HyperlinkedModelSerializer):
 
 
 class OfferDetailSerializer(ModelSerializer):
+    def validate_revisions(self, value):
+        if value != -1 and value < 0:
+            raise serializers.ValidationError("Revisions must be -1 (unlimited) or >= 0.")
+        return value
     class Meta:
         model = OfferDetail
         fields = [
