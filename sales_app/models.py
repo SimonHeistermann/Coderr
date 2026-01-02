@@ -1,5 +1,5 @@
 from django.db import models
-from django.core.validators import MaxValueValidator, MinValueValidator
+from django.core.validators import MaxValueValidator, MinValueValidator, MaxLengthValidator
 from user_auth_app.models import UserProfile
 
 
@@ -8,9 +8,9 @@ class Offer(models.Model):
     Represents an offer made by business user
     """
     user_profile = models.ForeignKey(UserProfile, related_name='offers', on_delete=models.CASCADE)
-    title = models.CharField(max_length=255)
+    title = models.CharField(max_length=100)
     image = models.FileField(upload_to='offers/', null=True, blank=True)
-    description = models.TextField(default='', blank=True)
+    description = models.TextField(default='', blank=True, validators=[MaxLengthValidator(5000)])
     created_at = models.DateTimeField(auto_now_add=True) 
     updated_at = models.DateTimeField(auto_now=True)    
 
@@ -32,9 +32,9 @@ class OfferDetail(models.Model):
     OFFER_TYPES = [(BASIC, 'basic'), (STANDARD, 'standard'), (PREMIUM, 'premium')]
 
     offer = models.ForeignKey(Offer, related_name='details', on_delete=models.CASCADE)
-    title = models.CharField(max_length=255)
+    title = models.CharField(max_length=100)
     revisions = models.IntegerField(validators=[MinValueValidator(-1)])
-    delivery_time_in_days = models.PositiveIntegerField()
+    delivery_time_in_days = models.PositiveIntegerField(validators=[MinValueValidator(1)])
     price = models.DecimalField(max_digits=10, decimal_places=2)
     features = models.JSONField(default=list, blank=True) 
     offer_type = models.CharField(max_length=10, choices=OFFER_TYPES, default=BASIC)
@@ -82,7 +82,7 @@ class Review(models.Model):
     rating = models.IntegerField(
         validators=[MinValueValidator(1), MaxValueValidator(5)]
     )
-    description = models.TextField()
+    description = models.TextField(validators=[MaxLengthValidator(1000)])
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
