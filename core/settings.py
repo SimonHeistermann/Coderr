@@ -157,16 +157,16 @@ REST_FRAMEWORK = {
         "django_filters.rest_framework.DjangoFilterBackend",
     ],
     "DATETIME_FORMAT": "%Y-%m-%dT%H:%M:%SZ",
-    "DEFAULT_THROTTLE_CLASSES": [
-        "rest_framework.throttling.AnonRateThrottle",
-        "rest_framework.throttling.UserRateThrottle",
-        "rest_framework.throttling.ScopedRateThrottle",
-    ],
-    "DEFAULT_THROTTLE_RATES": {
-        "anon": "100/day",
-        "user": "1000/day",
-        "login": "5/min",
-        "registration": "3/min",
-        "order_create": "20/hour",
-    },
+    # "DEFAULT_THROTTLE_CLASSES": [
+    #     "rest_framework.throttling.AnonRateThrottle",
+    #     "rest_framework.throttling.UserRateThrottle",
+    #     "rest_framework.throttling.ScopedRateThrottle",
+    # ],
+    # "DEFAULT_THROTTLE_RATES": {
+    #     "anon": "100/day",
+    #     "user": "1000/day",
+    #     "login": "5/min",
+    #     "registration": "3/min",
+    #     "order_create": "20/hour",
+    # },
 }
