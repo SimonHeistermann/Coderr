@@ -15,7 +15,6 @@ from .permissions import (
     IsStaffForDeleteOrOrderPartyForReadAndBusinessOwnerForWrite,
     IsUserWithProfile,
     PublicReadBusinessWrite,
-    IsBusinessOwnerOrReadOnly,
     IsAuthenticatedForReadAndBusinessOwnerForWrite
 )
 from .serializers import (
@@ -175,7 +174,6 @@ class CompletedOrderCountForBusinessView(APIView):
         return Response({"completed_order_count": count}, status=status.HTTP_200_OK)
 
 
-
 class ReviewListCreateView(generics.ListCreateAPIView):
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
     ordering_fields = ["updated_at", "rating"]
@@ -185,7 +183,7 @@ class ReviewListCreateView(generics.ListCreateAPIView):
 
     def get_permissions(self):
         if self.request.method in SAFE_METHODS:
-            return [AllowAny()]
+            return [IsAuthenticated()]
         return [IsUserWithProfile()]
 
 
@@ -195,7 +193,7 @@ class ReviewDetailView(generics.RetrieveUpdateDestroyAPIView):
 
     def get_permissions(self):
         if self.request.method in SAFE_METHODS:
-            return [AllowAny()]
+            return [IsAuthenticated()]
         return [IsReviewerSelf()]
 
 
